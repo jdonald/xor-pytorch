@@ -18,12 +18,39 @@ func(0.3, 0.9) --> 1.0
 
 ## Network Architecture
 
-Use a simple neural network topology, ideally just two layers (one hidden layer
-with a small number of neurons, plus the output layer). XOR is a classic problem
-that can be solved with minimal architecture, and a simpler network will train
-quickly and reliably.
+Simple 2-layer network: 2 inputs → 4 hidden neurons (sigmoid) → 1 output (sigmoid).
+Uses BCE loss and SGD optimizer.
+
+## Usage
+
+```bash
+# Generate data
+python3 xor_net.py generate --seed 42 --samples 1000 --output train_data.json
+
+# Train
+python3 xor_net.py train --data train_data.json --weights weights.pt --epochs 10000 --lr 2.0
+
+# Test (prints GPU then CPU benchmarks)
+python3 xor_net.py test --data test_data.json --weights weights.pt
+```
 
 ## Testing Inference
 
 When testing inference, print benchmarks from running first on the GPU and then
 on the CPU.
+
+Sample output:
+```
+=== GPU Benchmark ===
+Device: Tesla T4
+Inference time: 0.1907 ms
+Samples: 200
+Correct: 196/200
+Error rate: 2.00%
+
+=== CPU Benchmark ===
+Inference time: 0.0703 ms
+Samples: 200
+Correct: 196/200
+Error rate: 2.00%
+```
